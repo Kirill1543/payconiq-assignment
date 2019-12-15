@@ -280,6 +280,20 @@ class StockControllerTests {
         assertException(exception, IncorrectRequestException.class, "Stock price should be greater than zero");
     }
 
+    @Test
+    void testPutNewPriceNull() throws Exception {
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest();
+
+        Exception exception = mockMvc.perform(
+                put("/api/stocks/4")
+                        .contentType("application/json")
+                        .content(new ObjectMapper().writeValueAsString(priceUpdateRequest)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResolvedException();
+        assertException(exception, IncorrectRequestException.class, "Stock price should be greater than zero");
+    }
+
     private static void assertException(Exception exception, Class<? extends Throwable> exceptionClass, String message) {
         assertThat(exception).isNotNull();
         assertThat(exception).isExactlyInstanceOf(exceptionClass);
