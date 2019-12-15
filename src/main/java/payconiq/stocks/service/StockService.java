@@ -64,7 +64,7 @@ public class StockService {
      */
     @Transactional
     @NonNull
-    public Stock updateStockPrice(long id, double price) {
+    public Stock updateStockPrice(long id, @Nullable Double price) {
         validatePrice(price);
         Stock stock = lookupStock(id);
         stock.setCurrentPrice(price);
@@ -114,8 +114,8 @@ public class StockService {
      * @return input price.
      * @throws IncorrectRequestException when price is 0 or less.
      */
-    private static double validatePrice(double price) {
-        if (price <= 0) {
+    private static double validatePrice(@Nullable Double price) {
+        if (price == null || price <= 0) {
             throw new IncorrectRequestException("Stock price should be greater than zero");
         }
         return price;
