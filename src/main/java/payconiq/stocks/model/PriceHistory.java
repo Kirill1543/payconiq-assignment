@@ -8,6 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.Instant;
 
+/**
+ * Entity which tracks price history for stock.
+ * Contains exact price value and time intervals, when it was actual.
+ * If {@link PriceHistory#endDate} is null, it means that it is actual price for {@link Stock}.
+ */
 @Entity
 public class PriceHistory {
 

@@ -14,9 +14,17 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.ZoneOffset;
 
+/**
+ * Stocks Application main class. Is driven by Spring Boot 2.
+ */
 @SpringBootApplication
 public class Application {
 
+    /**
+     * Application executing class.
+     *
+     * @param args - args which can be consumed by Spring Boot 2.
+     */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

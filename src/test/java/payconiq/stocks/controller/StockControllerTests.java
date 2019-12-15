@@ -11,10 +11,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import payconiq.stocks.exception.IncorrectStockStateException;
+import payconiq.stocks.exception.IncorrectRequestException;
 import payconiq.stocks.exception.StockAlreadyExistsException;
 import payconiq.stocks.exception.StockNotFoundException;
 import payconiq.stocks.model.PriceHistory;
+import payconiq.stocks.request.NewStockRequest;
+import payconiq.stocks.request.PriceUpdateRequest;
 import payconiq.stocks.model.Stock;
 import payconiq.stocks.repository.StockRepository;
 
@@ -113,16 +115,16 @@ class StockControllerTests {
 
     @Test
     void testPostNewStock() throws Exception {
-        Stock stock = new Stock();
-        stock.setName("   Tokyo Stock    ");
-        stock.setCurrentPrice(2d);
+        NewStockRequest newStockRequest = new NewStockRequest();
+        newStockRequest.setName("   Tokyo Stock    ");
+        newStockRequest.setPrice(2d);
 
         Instant timestampBeforeInsertion = Instant.now();
 
         mockMvc.perform(
                 post("/api/stocks")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(newStockRequest)))
                 .andExpect(status().isOk());
 
         Optional<Stock> expectedStock = stockRepository.findByName("Tokyo Stock");
@@ -150,48 +152,48 @@ class StockControllerTests {
 
     @Test
     void testPostNewStockZeroPrice() throws Exception {
-        Stock stock = new Stock();
-        stock.setName("Hong-Kong Stock");
-        stock.setCurrentPrice(0d);
+        NewStockRequest newStockRequest = new NewStockRequest();
+        newStockRequest.setName("Hong-Kong Stock");
+        newStockRequest.setPrice(0d);
 
         Exception exception = mockMvc.perform(
                 post("/api/stocks")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(newStockRequest)))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResolvedException();
 
-        assertException(exception, IncorrectStockStateException.class, "Stock price should be greater than zero");
+        assertException(exception, IncorrectRequestException.class, "Stock price should be greater than zero");
     }
 
     @Test
     void testPostNewStockEmptyName() throws Exception {
-        Stock stock = new Stock();
-        stock.setName("     ");
-        stock.setCurrentPrice(10d);
+        NewStockRequest newStockRequest = new NewStockRequest();
+        newStockRequest.setName("     ");
+        newStockRequest.setPrice(10d);
 
         Exception exception = mockMvc.perform(
                 post("/api/stocks")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(newStockRequest)))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResolvedException();
 
-        assertException(exception, IncorrectStockStateException.class, "Stock name can't be empty");
+        assertException(exception, IncorrectRequestException.class, "Stock name can't be empty");
     }
 
     @Test
     void testPostNewStockAlreadyExists() throws Exception {
-        Stock stock = new Stock();
-        stock.setName("London Stock");
-        stock.setCurrentPrice(10d);
+        NewStockRequest newStockRequest = new NewStockRequest();
+        newStockRequest.setName(" London Stock  ");
+        newStockRequest.setPrice(10d);
 
         Exception exception = mockMvc.perform(
                 post("/api/stocks")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(newStockRequest)))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResolvedException();
@@ -203,9 +205,8 @@ class StockControllerTests {
     void testPutNewPrice() throws Exception {
         double newPrice = 2.1;
 
-        Stock stock = new Stock();
-        stock.setCurrentPrice(newPrice);
-        stock.setName("New ignored name");
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest();
+        priceUpdateRequest.setPrice(newPrice);
 
         Optional<Stock> expectedStock = stockRepository.findById(4L);
         assertThat(expectedStock).isPresent();
@@ -218,7 +219,7 @@ class StockControllerTests {
         mockMvc.perform(
                 put("/api/stocks/4")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(priceUpdateRequest)))
                 .andExpect(status().isOk());
 
         Optional<Stock> updatedStock = stockRepository.findById(4L);
@@ -251,13 +252,13 @@ class StockControllerTests {
 
     @Test
     void testPutNewPriceIncorrectId() throws Exception {
-        Stock stock = new Stock();
-        stock.setCurrentPrice(3d);
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest();
+        priceUpdateRequest.setPrice(3d);
 
         Exception exception = mockMvc.perform(
                 put("/api/stocks/6")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(priceUpdateRequest)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResolvedException();
@@ -266,17 +267,17 @@ class StockControllerTests {
 
     @Test
     void testPutNewPriceNegative() throws Exception {
-        Stock stock = new Stock();
-        stock.setCurrentPrice(-3d);
+        PriceUpdateRequest priceUpdateRequest = new PriceUpdateRequest();
+        priceUpdateRequest.setPrice(-3d);
 
         Exception exception = mockMvc.perform(
                 put("/api/stocks/4")
                         .contentType("application/json")
-                        .content(new ObjectMapper().writeValueAsString(stock)))
+                        .content(new ObjectMapper().writeValueAsString(priceUpdateRequest)))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResolvedException();
-        assertException(exception, IncorrectStockStateException.class, "Stock price should be greater than zero");
+        assertException(exception, IncorrectRequestException.class, "Stock price should be greater than zero");
     }
 
     private static void assertException(Exception exception, Class<? extends Throwable> exceptionClass, String message) {

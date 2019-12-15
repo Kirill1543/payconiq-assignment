@@ -11,6 +11,10 @@ import org.springframework.web.context.request.WebRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * Default application error controller.
+ * Converts error description into a json.
+ */
 @RestController
 @RequestMapping("/error")
 public class AppErrorController implements ErrorController {

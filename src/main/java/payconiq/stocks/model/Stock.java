@@ -12,6 +12,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stock entity which contains info about stock, its name and price.
+ * Is linked with the {@link PriceHistory}.
+ */
 @Entity
 public class Stock {
 
@@ -29,10 +33,6 @@ public class Stock {
     @OrderBy("startDate DESC")
     @JsonIgnore
     private List<PriceHistory> history = new ArrayList<>();
-
-    public Stock() {
-    }
-
 
     public Long getId() {
         return id;
