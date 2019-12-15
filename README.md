@@ -2,7 +2,7 @@
 
 This a small RESTful Stocks application with next features
 
-##Features
+## Features
 Supports next REST operations:
  - *GET /api/stocks* - To get information all application stocks.  
  Information does not contain price history
