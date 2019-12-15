@@ -21,6 +21,8 @@ Command to build with maven:
 Or if you want to skip tests:  
 > mvn clean install -DskipTests
 
-Command to start after build:  
+Command to start after build (on port 8080):  
 > java -jar target/payconiq-assignment-1.0.jar
 
+To start server on a specific port:
+> java -jar target/payconiq-assignment-1.0.jar --server.port=8081
