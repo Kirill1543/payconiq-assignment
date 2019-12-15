@@ -1,0 +1,9 @@
+body {
+  background-color: #97b1ec;
+}
+#h01 {
+  color: blue;
+}
+table, th, td {
+  border: 1px solid black;
+}
