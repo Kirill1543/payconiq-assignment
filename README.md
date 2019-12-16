@@ -24,6 +24,14 @@ Supports next REST operations:
  Example of request json with changes:
   > {"name":"Hong-Kong Stock", "price":4.5}
 
+## Requests Requirements
+There are some requirements for the input requests:
+ - Input price should be present and greater than 0. Otherwise there will be an exception.
+ - Input stock name should be not-empty. Otherwise there will be an exception.
+ - Input stock name should be unique (after removing trailing and leading whitespaces).  
+ Otherwise there will be an exception.
+ - Stock name can't be modified.
+
 ## How to build and start server
 *Note*: Java 11 is required  
 
