@@ -12,6 +12,13 @@ $.ajax({
             update_button.onclick=function(){
                 updatePrice(stock.id, input_price.value);
             };
+            var history_button = document.createElement("button");
+            history_button.innerHTML = "History";
+            history_button.onclick=function(){
+                var this_url = window.location.href;
+                password=1234;
+                window.open(this_url + 'history.html?id='+stock.id,"");
+            };
             lastId = i + 1;
             var row = table.insertRow(lastId);
             var cell1 = row.insertCell(0);
@@ -19,6 +26,7 @@ $.ajax({
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
 
             cell1.innerHTML = stock.id;
             cell2.innerHTML = stock.name;
@@ -26,6 +34,7 @@ $.ajax({
             cell4.innerHTML = stock.lastUpdate;
             cell5.appendChild(input_price);
             cell5.appendChild(update_button);
+            cell6.appendChild(history_button);
         });
         var input_new_name = document.createElement("input");
         input_new_name.type = "text";
