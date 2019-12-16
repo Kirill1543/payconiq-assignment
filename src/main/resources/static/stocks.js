@@ -60,7 +60,7 @@ function addNewStock(name, price){
             console.log(result);
         },
         error: function(xhr, resp, text) {
-            console.log(xhr, resp, text);
+            showError(xhr, resp, text);
         }
     })
 }
@@ -75,7 +75,12 @@ function updatePrice(id, price){
             console.log(result);
         },
         error: function(xhr, resp, text) {
-            console.log(xhr, resp, text);
+            showError(xhr, resp, text);
         }
     })
+}
+function showError(xhr, resp, text) {
+    var errorObj = JSON.parse(xhr.responseText);
+    alert(errorObj.error + ":" + errorObj.message);
+    console.log(xhr, resp, text);
 }
