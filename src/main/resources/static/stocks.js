@@ -6,7 +6,7 @@ $.ajax({
         var lastId = 0;
         $.each(data, function (i, stock) {
             var input_price = document.createElement("input");
-            input_price.type = "text";
+            input_price.type = "number";
             var update_button = document.createElement("button");
             update_button.innerHTML = "Update";
             update_button.onclick=function(){
@@ -39,7 +39,7 @@ $.ajax({
         var input_new_name = document.createElement("input");
         input_new_name.type = "text";
         var input_new_price = document.createElement("input");
-        input_new_price.type = "text";
+        input_new_price.type = "number";
 
         var add_new_button = document.createElement("button");
         add_new_button.innerHTML = "+";
