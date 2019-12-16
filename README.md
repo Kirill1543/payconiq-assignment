@@ -1,6 +1,8 @@
 # Payconiq Stocks Application
 
-This a small RESTful Stocks application with next features
+This a small RESTful Stocks application with next features.  
+All changes are kept in-memory (with H2 database).  
+Application have some initial not-empty stocks, which will be same each time after application restart.
 
 ## Features
 Supports next REST operations:
@@ -26,3 +28,13 @@ Command to start after build (on port 8080):
 
 To start server on a specific port:
 > java -jar target/payconiq-assignment-1.0.jar --server.port=8081
+
+## Front End
+Web server is started by request after application startup.
+To open it, please follow (port may be different):
+> localhost:8080
+
+It contains small API which allows to execute each REST request from the list upper.  
+
+*Note*: Web was tested only on Google Chrome browser, so, use please it  
+if any issues will appear with other browser.
