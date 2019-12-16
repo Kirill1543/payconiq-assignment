@@ -125,7 +125,7 @@ class StockControllerTests {
                 post("/api/stocks")
                         .contentType("application/json")
                         .content(new ObjectMapper().writeValueAsString(newStockRequest)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         Optional<Stock> expectedStock = stockRepository.findByName("Tokyo Stock");
         assertThat(expectedStock)

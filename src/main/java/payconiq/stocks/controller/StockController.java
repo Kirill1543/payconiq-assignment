@@ -3,14 +3,8 @@ package payconiq.stocks.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import payconiq.stocks.exception.IncorrectRequestException;
 import payconiq.stocks.model.PriceHistory;
 import payconiq.stocks.model.Stock;
@@ -18,6 +12,7 @@ import payconiq.stocks.request.NewStockRequest;
 import payconiq.stocks.request.PriceUpdateRequest;
 import payconiq.stocks.service.StockService;
 
+import java.net.URI;
 import java.util.Collection;
 
 /**
@@ -73,8 +68,8 @@ public class StockController {
      * @param priceUpdateRequest - {@link PriceUpdateRequest} of price update.
      * @param id                 - id of stock to update.
      * @return update result response.
-     * @throws payconiq.stocks.exception.StockNotFoundException       when there is no stock with such id.
-     * @throws IncorrectRequestException when price is 0 or below.
+     * @throws payconiq.stocks.exception.StockNotFoundException when there is no stock with such id.
+     * @throws IncorrectRequestException                        when price is 0 or below.
      */
     @PutMapping("/{id}")
     @ResponseBody
@@ -89,14 +84,16 @@ public class StockController {
      *
      * @param newStockRequest - {@link NewStockRequest} of new stock to add.
      * @return adding result response.
-     * @throws IncorrectRequestException when price is 0 or below or stock name is empty.
-     * @throws payconiq.stocks.exception.StockAlreadyExistsException  when stock with such name already exists.
+     * @throws IncorrectRequestException                             when price is 0 or below or stock name is empty.
+     * @throws payconiq.stocks.exception.StockAlreadyExistsException when stock with such name already exists.
      */
     @PostMapping
     @ResponseBody
     @NonNull
     public ResponseEntity<?> addStock(@RequestBody @NonNull NewStockRequest newStockRequest) {
-        stockService.addNewStock(newStockRequest);
-        return ResponseEntity.ok("New stock added");
+        Stock newStock = stockService.addNewStock(newStockRequest);
+        URI newStockLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(newStock.getId()).toUri();
+        return ResponseEntity.created(newStockLocation).body("New Stock created");
     }
 }
