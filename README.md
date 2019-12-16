@@ -4,7 +4,7 @@ This a small RESTful Stocks application with next features.
 All changes are kept in-memory (with H2 database).  
 Application have some initial not-empty stocks, which will be same each time after application restart.
 
-## Features
+## REST API
 Supports next REST operations:
  - *GET /api/stocks* - To get information all application stocks.  
  Information does not contain price history  
@@ -14,6 +14,7 @@ Supports next REST operations:
  Example of output json:
  > {"id":1,"name":"London Stock","currentPrice":2.0,"lastUpdate":"2019-12-11T22:58:34Z"}
  - *GET /api/stocks/{id}/history* - To get price history for particular stock  
+ If endDate is null - it means that this price is last. Should be exact 1 null endDate in all price history.  
  Example of output json:
  > "[{\"price\":1.9,\"startDate\":\"2019-12-11T23:59:56Z\",\"endDate\":null},{\"price\":1.94,\"startDate\":\"2019-12-10T07:03:00Z\",\"endDate\":\"2019-12-11T23:59:56Z\"},{\"price\":1.59,\"startDate\":\"2019-12-09T21:08:47Z\",\"endDate\":\"2019-12-10T07:03:00Z\"}]"
  - *PUT /api/stocks/{id}* - To update particular stock price.  
