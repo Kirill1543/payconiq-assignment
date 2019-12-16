@@ -54,5 +54,7 @@ To open it, please follow (port may be different):
 
 It contains small API which allows to execute each REST request from the list upper.  
 
-*Note*: Web was tested only on Google Chrome browser, so, use please it  
-if any issues will appear with other browser.
+*Notes*:  
+ - Web was tested only on Google Chrome browser, so, use please it  
+ if any issues will appear with other browser.
+ - Updates are not real-time, so use please page refresh after successful update to catch up changes
